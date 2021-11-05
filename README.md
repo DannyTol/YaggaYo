@@ -1,2 +1,2 @@
 # YaggaYo
- 2D_Shoot_m_Uo
+ 2D_Shoot_m_Up
