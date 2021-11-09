@@ -27,15 +27,23 @@ public class DestroyWall : MonoBehaviour
         }
     }
 
-    //Collision with ShieldItem, ShieldItem destroy
+    
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        //Collision with ShieldItem, ShieldItem destroy
         if (collision.gameObject.tag == "ShieldItem")
         {
             Debug.Log("DestroyWall collision with ShieldItem");
             Destroy(collision.gameObject);
         }
-        
+
+        //Collision with Enemy, Enemy destroys/die
+        if (gameObject.tag == "Enemy")
+        {
+            Debug.Log("DestroyWall collision with Enemy");
+            Destroy(collision.gameObject);
+        }
+
     }
 
 }

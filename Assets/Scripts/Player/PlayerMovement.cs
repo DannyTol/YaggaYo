@@ -26,8 +26,12 @@ public class PlayerMovement : MonoBehaviour
     public Text healthText;
     [Space]
     public GameObject playerDamagePrefab;
-    
+    [Space]
+    public GameObject gameOverCanvasPrefab;
 
+    
+    private int gameOver = 0;
+    
     
 
 
@@ -61,12 +65,15 @@ public class PlayerMovement : MonoBehaviour
     // Player shoots
     void Shoot()
     {
-        if (Input.GetMouseButtonDown(0))
+        //if(maxHealth > 0)
         {
-            Debug.Log("Create a Bullet");
-            GameObject newBullet = Instantiate(bulletPrefab);
-            newBullet.transform.position = shootPoint.transform.position;
-            Destroy(newBullet, 1f);
+            if (Input.GetMouseButtonDown(0))
+            {
+                Debug.Log("Create a Bullet");
+                GameObject newBullet = Instantiate(bulletPrefab);
+                newBullet.transform.position = shootPoint.transform.position;
+                Destroy(newBullet, 1.5f);
+            }
         }
     }
     
@@ -90,14 +97,22 @@ public class PlayerMovement : MonoBehaviour
             newSprite.transform.position = gameObject.transform.position;
             Destroy(newSprite, 0.2f);
         }
+
+        // Collision with EnemyBullet
+        if (collision.gameObject.tag == "EnemyBullet")
+        {
+            GameObject newSprite = Instantiate(playerDamagePrefab);
+            newSprite.transform.position = gameObject.transform.position;
+            Destroy(newSprite, 0.2f);
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         // Collision with Medikit
-        if(collision.gameObject.tag == "MediKit")
+        if (collision.gameObject.tag == "MediKit")
         {
-            if(maxHealth <= 100)
+            if (maxHealth <= 100)
             {
                 Destroy(collision.gameObject);
                 maxHealth += 50;
@@ -112,6 +127,13 @@ public class PlayerMovement : MonoBehaviour
             GameObject shield = Instantiate(shieldPrefab);
             shield.transform.position = shieldPoint.transform.position;
             Destroy(shield, 50f);
+        }
+
+        if (collision.gameObject.tag == "Enemy")
+        {
+            GameObject newSprite = Instantiate(playerDamagePrefab);
+            newSprite.transform.position = gameObject.transform.position;
+            Destroy(newSprite, 0.2f);
         }
     }
 
@@ -133,6 +155,16 @@ public class PlayerMovement : MonoBehaviour
     void Die()
     {
         Debug.Log("Player is dead");
-        SceneManager.LoadScene(0);
+        
+        if (gameOver <= 0)
+        {
+            Instantiate(gameOverCanvasPrefab);
+            gameOver = 1;
+            speed = 0;
+            forwardSpeed = 0;
+            FindObjectOfType<DestroyWall>().speed = 0;
+        }
     }
+
+   
 }
