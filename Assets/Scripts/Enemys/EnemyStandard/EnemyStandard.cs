@@ -9,6 +9,11 @@ public class EnemyStandard : MonoBehaviour
     public float speed;
     [Space]
     public int pointsToGive;
+    [Space]
+    public GameObject damageSpritePrefab;
+    [Space]
+    public GameObject dieEffectPrefab;
+    
 
     private void Update()
     {
@@ -19,11 +24,21 @@ public class EnemyStandard : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        // Collision with Bullet enemy gets Damage
+        // Collision with Bullet enemy gets Damage and Sprite changes
         if(collision.gameObject.tag == "Bullet")
         {
             Debug.Log("Bullet hits Enemy");
             health -= FindObjectOfType<Bullet>().bulletDamage;
+            GameObject newSprite = Instantiate(damageSpritePrefab);
+            newSprite.transform.position = gameObject.transform.position;
+            Destroy(newSprite, 0.1f);
+        }
+
+        // Collision with DestroyWall StandardEnemy destroys
+        if (collision.gameObject.tag == "DestroyWall")
+        {
+            Debug.Log("StandardEnemy Collision with DestroyWall");
+            Destroy(gameObject);
         }
     }
 
@@ -63,5 +78,8 @@ public class EnemyStandard : MonoBehaviour
         Destroy(gameObject);
         FindObjectOfType<PlayerMovement>().points += pointsToGive;
         Debug.Log("Player get Points");
+        GameObject newEffect = Instantiate(dieEffectPrefab);
+        newEffect.transform.position = gameObject.transform.position;
+        Destroy(newEffect, 1.2f);
     }
 }

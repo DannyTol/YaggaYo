@@ -4,6 +4,24 @@ using UnityEngine;
 
 public class PlayerDamageSprite : MonoBehaviour
 {
+    private float health;
+
+
+    private void Update()
+    {
+        Die();
+    }
+
+    // If Player is dead Sprite is enabled
+    void Die()
+    {
+        health = FindObjectOfType<PlayerMovement>().maxHealth;
+
+        if(health <= 0)
+        {
+            GetComponent<Renderer>().enabled = false;
+        }
+    }
     
 
     private void OnTriggerEnter2D(Collider2D collision)

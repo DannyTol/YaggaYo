@@ -21,6 +21,7 @@ public class PlayerMovement : MonoBehaviour
     [Space]
     public GameObject bulletPrefab;
     public Transform shootPoint;
+    public AudioSource audioShoot;
     [Space]
     public Text scoreText;
     public Text healthText;
@@ -28,9 +29,13 @@ public class PlayerMovement : MonoBehaviour
     public GameObject playerDamagePrefab;
     [Space]
     public GameObject gameOverCanvasPrefab;
+    [Space]
+    public Canvas target1;
+
+    [Space]
+    public int gameOver = 0;
 
     
-    private int gameOver = 0;
     
     
 
@@ -65,13 +70,14 @@ public class PlayerMovement : MonoBehaviour
     // Player shoots
     void Shoot()
     {
-        //if(maxHealth > 0)
+        if(maxHealth > 0)
         {
             if (Input.GetMouseButtonDown(0))
             {
                 Debug.Log("Create a Bullet");
                 GameObject newBullet = Instantiate(bulletPrefab);
                 newBullet.transform.position = shootPoint.transform.position;
+                audioShoot.Play();
                 Destroy(newBullet, 1.5f);
             }
         }
@@ -163,6 +169,8 @@ public class PlayerMovement : MonoBehaviour
             speed = 0;
             forwardSpeed = 0;
             FindObjectOfType<DestroyWall>().speed = 0;
+            GetComponent<Renderer>().enabled = false;
+            Destroy(target1);
         }
     }
 
