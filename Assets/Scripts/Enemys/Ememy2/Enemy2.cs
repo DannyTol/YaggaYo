@@ -20,6 +20,11 @@ public class Enemy2 : MonoBehaviour
     public Transform shootPoint3;
     [Space]
     public GameObject target;
+    [Space]
+    public GameObject damageSpritePrefab;
+    [Space]
+    public GameObject dieEffectPrefab;
+   
     
    
 
@@ -51,6 +56,9 @@ public class Enemy2 : MonoBehaviour
         {
             Debug.Log("Bullet hits Enemy");
             health -= FindObjectOfType<Bullet>().bulletDamage;
+            GameObject newSprite = Instantiate(damageSpritePrefab);
+            newSprite.transform.position = gameObject.transform.position;
+            Destroy(newSprite, 0.1f);
         }
 
         // Enemy collision with DestroyWall
@@ -91,6 +99,9 @@ public class Enemy2 : MonoBehaviour
         Debug.Log("Enemy2 is dead");
         Destroy(gameObject);
         FindObjectOfType<PlayerMovement>().points += pointsToGive;
+        GameObject newEffect = Instantiate(dieEffectPrefab);
+        newEffect.transform.position = gameObject.transform.position;
+        Destroy(newEffect, 1.5f);
     }
 
     void Timer()

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 95287624690902573}
   - component: {fileID: -3949011979549533773}
   m_Layer: 0
-  m_Name: StandardEnemyDestroyEffect
+  m_Name: StandardEnemy2DestroyEffect
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -235,9 +235,9 @@ ParticleSystem:
         key6: {r: 0.6415094, g: 0.17631595, b: 0.075649686, a: 0}
         key7: {r: 0.8867924, g: 0.7287304, b: 0.26352793, a: 0}
         ctime0: 0
-        ctime1: 5204
-        ctime2: 10601
-        ctime3: 16577
+        ctime1: 3662
+        ctime2: 5397
+        ctime3: 10601
         ctime4: 44525
         ctime5: 45682
         ctime6: 53006
@@ -285,7 +285,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 10
+      scalar: 8
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4873,10 +4873,10 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: d47e6ed162da1f740ad807d00f4679f3, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 1fd31868d68903d4f9e2c4a3b7ef98f3, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.3
-  m_Pitch: 0.21
+  m_Pitch: 0.85
   Loop: 0
   Mute: 0
   Spatialize: 0
