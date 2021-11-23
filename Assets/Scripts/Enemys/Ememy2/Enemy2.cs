@@ -24,10 +24,9 @@ public class Enemy2 : MonoBehaviour
     public GameObject damageSpritePrefab;
     [Space]
     public GameObject dieEffectPrefab;
-   
-    
-   
 
+   
+    // Gives Enemy Random Speed
     private void Awake()
     {
         speed = Random.Range(0.3f, 2f);
@@ -56,9 +55,18 @@ public class Enemy2 : MonoBehaviour
         {
             Debug.Log("Bullet hits Enemy");
             health -= FindObjectOfType<Bullet>().bulletDamage;
-            GameObject newSprite = Instantiate(damageSpritePrefab);
-            newSprite.transform.position = gameObject.transform.position;
-            Destroy(newSprite, 0.1f);
+
+            DamageSprite();
+        }
+
+        // Enemy collision with PlayerRocket
+        if (collision.gameObject.tag == "Rocket")
+        {
+            Debug.Log("Enemy2 collision with PlayerRocket");
+            health -= FindObjectOfType<Rocket>().damage;
+
+            DamageSprite();
+
         }
 
         // Enemy collision with DestroyWall
@@ -93,15 +101,32 @@ public class Enemy2 : MonoBehaviour
         }
     }
 
+    // Enemy Creates DamageSprite
+    void DamageSprite()
+    {
+        Debug.Log("Enemy2 creates DamageSprite");
+        GameObject newSprite = Instantiate(damageSpritePrefab);
+        newSprite.transform.position = gameObject.transform.position;
+        Destroy(newSprite, 0.1f);
+    }
+
     // Enemy Death
     void Die()
     {
         Debug.Log("Enemy2 is dead");
         Destroy(gameObject);
         FindObjectOfType<PlayerMovement>().points += pointsToGive;
+
+        Explosion();
+    }
+
+    //Enemy Creates ExplosionsEffect
+    void Explosion()
+    {
+        Debug.Log("Enemy2 creates ExplosionEffect");
         GameObject newEffect = Instantiate(dieEffectPrefab);
         newEffect.transform.position = gameObject.transform.position;
-        Destroy(newEffect, 1.5f);
+        Destroy(newEffect, 1.2f);
     }
 
     void Timer()
@@ -119,9 +144,6 @@ public class Enemy2 : MonoBehaviour
         {
             firstShot = nextShot;
         }
-        
-               
-       
     }
 
     // If Timer = 0 Enemy will shoot
@@ -146,7 +168,6 @@ public class Enemy2 : MonoBehaviour
             GameObject newBullet3 = Instantiate(enemy2BulletPrefab);
             newBullet3.transform.position = shootPoint3.transform.position;
             Destroy(newBullet3, 2.5f);
-        }
-        
+        }  
     }
 }

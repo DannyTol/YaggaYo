@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     public float speed;
     public float forwardSpeed;
     [Space]
+    public int rockets;
+    [Space]
     public int points;
     [Space]
     public GameObject shieldPrefab;
@@ -23,8 +25,11 @@ public class PlayerMovement : MonoBehaviour
     public Transform shootPoint;
     public AudioSource audioShoot;
     [Space]
+    public GameObject rocketPrefab;
+    [Space]
     public Text scoreText;
     public Text healthText;
+    public Text rocketsText;
     [Space]
     public GameObject playerDamagePrefab;
     [Space]
@@ -35,16 +40,14 @@ public class PlayerMovement : MonoBehaviour
     [Space]
     public int gameOver = 0;
 
-    
-    
-    
-
 
     private void Update()
     {
         Move();
 
         Shoot();
+
+        ShootRocket();
 
         UiText();
 
@@ -74,21 +77,56 @@ public class PlayerMovement : MonoBehaviour
         {
             if (Input.GetMouseButtonDown(0))
             {
-                Debug.Log("Create a Bullet");
-                GameObject newBullet = Instantiate(bulletPrefab);
-                newBullet.transform.position = shootPoint.transform.position;
-                audioShoot.Play();
-                Destroy(newBullet, 1.5f);
+                CreateBullet();
             }
         }
     }
+
+    // Player create a Bullet
+    void CreateBullet()
+    {
+        Debug.Log("Create a Bullet");
+        GameObject newBullet = Instantiate(bulletPrefab);
+        newBullet.transform.position = shootPoint.transform.position;
+        audioShoot.Play();
+        Destroy(newBullet, 1.5f);
+    }
+
+    // Player Shoots Rocket 
+    void ShootRocket()
+    {
+        if (maxHealth > 0)
+        {
+            if (Input.GetMouseButtonDown(1))
+            {
+                if (rockets > 0)
+                {
+                    CreateRocket();
+                    rockets -= 1;
+                }
+                else
+                {
+                    Debug.Log("No Rockets");
+                }
+            }
+        }
+    }
+
+    // Player create a Rocket
+    void CreateRocket()
+    {
+        Debug.Log("Player Shoot Rocket");
+        GameObject newRocket = Instantiate(rocketPrefab);
+        newRocket.transform.position = shootPoint.transform.position;
+        Destroy(newRocket, 1.5f);
+    }
     
-    // Show Score and Points
+    // Show Score, Points and Rockets
     void UiText()
     {
         scoreText.text = ("Score " + points.ToString());
         healthText.text = ("Health " + maxHealth.ToString());
-
+        rocketsText.text = ("Rockets " + rockets.ToString());
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -99,17 +137,14 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Player collision with Enemy");
             Destroy(collision.gameObject);
             maxHealth -= 50;
-            GameObject newSprite = Instantiate(playerDamagePrefab);
-            newSprite.transform.position = gameObject.transform.position;
-            Destroy(newSprite, 0.2f);
+
+            DamageSprite();
         }
 
         // Collision with EnemyBullet
         if (collision.gameObject.tag == "EnemyBullet")
         {
-            GameObject newSprite = Instantiate(playerDamagePrefab);
-            newSprite.transform.position = gameObject.transform.position;
-            Destroy(newSprite, 0.2f);
+            DamageSprite();
         }
     }
 
@@ -137,10 +172,25 @@ public class PlayerMovement : MonoBehaviour
 
         if (collision.gameObject.tag == "Enemy")
         {
-            GameObject newSprite = Instantiate(playerDamagePrefab);
-            newSprite.transform.position = gameObject.transform.position;
-            Destroy(newSprite, 0.2f);
+            DamageSprite();
         }
+
+        // Collision with RocketItem
+        if (collision.gameObject.tag == "RocketItem")
+        {
+            Debug.Log("Player collision with RocketItem");
+            Destroy(collision.gameObject);
+            rockets += 3;
+        }
+    }
+
+    // Create DamageSprite
+    void DamageSprite()
+    {
+        Debug.Log("Player creates DamageSprite");
+        GameObject newSprite = Instantiate(playerDamagePrefab);
+        newSprite.transform.position = gameObject.transform.position;
+        Destroy(newSprite, 0.2f);
     }
 
     // Player Health Managment
@@ -173,6 +223,4 @@ public class PlayerMovement : MonoBehaviour
             Destroy(target1);
         }
     }
-
-   
 }

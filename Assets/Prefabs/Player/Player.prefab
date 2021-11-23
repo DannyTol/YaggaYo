@@ -481,6 +481,7 @@ MonoBehaviour:
   maxHealth: 50
   speed: 5.2
   forwardSpeed: 3.5
+  rockets: 1
   points: 0
   shieldPrefab: {fileID: 2782722573380167996, guid: 8e05a4ac67284304e9d30365dccfb5b2, type: 3}
   shieldPoint: {fileID: 2108456915973729862}
@@ -488,6 +489,7 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7221832891849487958, guid: 35b7292a23174f64586d790182fed948, type: 3}
   shootPoint: {fileID: 2108456914530687693}
   audioShoot: {fileID: 4836691474216286622}
+  rocketPrefab: {fileID: 5809119718080817036, guid: b9c568c5d47323441a74db5e7b8114f9, type: 3}
   scoreText: {fileID: 0}
   healthText: {fileID: 0}
   playerDamagePrefab: {fileID: 418761020712186118, guid: 2ef78018abd2d9a4782bc4f05cad3c85, type: 3}

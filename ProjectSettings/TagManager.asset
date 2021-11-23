@@ -12,6 +12,8 @@ TagManager:
   - ShieldItem
   - EnemyBullet
   - PlayerDamageSprite
+  - Rocket
+  - RocketItem
   layers:
   - Default
   - TransparentFX

@@ -37,7 +37,7 @@ public class SpawnEnemy2 : MonoBehaviour
         }
     }
 
-    // Enemy will Create
+    // Spawn creates Enemy
     void Spawn()
     {
         Timer();

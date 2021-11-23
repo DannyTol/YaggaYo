@@ -29,9 +29,17 @@ public class EnemyStandard : MonoBehaviour
         {
             Debug.Log("Bullet hits Enemy");
             health -= FindObjectOfType<Bullet>().bulletDamage;
-            GameObject newSprite = Instantiate(damageSpritePrefab);
-            newSprite.transform.position = gameObject.transform.position;
-            Destroy(newSprite, 0.1f);
+
+            DamageSprite();
+        }
+
+        // Collision with PlayerRocket
+        if(collision.gameObject.tag == "Rocket")
+        {
+            Debug.Log("EnemyStandard collision with PlayerRocket");
+            health -= FindObjectOfType<Rocket>().damage;
+
+            DamageSprite();
         }
 
         // Collision with DestroyWall StandardEnemy destroys
@@ -58,6 +66,15 @@ public class EnemyStandard : MonoBehaviour
         transform.Translate(-speed * Time.deltaTime, 0, 0);
     }
 
+    // Enemy creates DamageSprite
+    void DamageSprite()
+    {
+        Debug.Log("StandardEnemy creates DamageSprite");
+        GameObject newSprite = Instantiate(damageSpritePrefab);
+        newSprite.transform.position = gameObject.transform.position;
+        Destroy(newSprite, 0.1f);
+    }
+
     //Enemy Healthmanagment
     void Health()
     {
@@ -78,6 +95,14 @@ public class EnemyStandard : MonoBehaviour
         Destroy(gameObject);
         FindObjectOfType<PlayerMovement>().points += pointsToGive;
         Debug.Log("Player get Points");
+
+        Explosion();
+    }
+
+    // Enemy creates ExplosionEffect
+    void Explosion()
+    {
+        Debug.Log("StandardEnemy creates ExplosionEffect");
         GameObject newEffect = Instantiate(dieEffectPrefab);
         newEffect.transform.position = gameObject.transform.position;
         Destroy(newEffect, 1.2f);
