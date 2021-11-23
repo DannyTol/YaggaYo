@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     public AudioSource audioShoot;
     [Space]
     public GameObject rocketPrefab;
+    public Transform rocketShootPoint;
     [Space]
     public Text scoreText;
     public Text healthText;
@@ -117,7 +118,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Debug.Log("Player Shoot Rocket");
         GameObject newRocket = Instantiate(rocketPrefab);
-        newRocket.transform.position = shootPoint.transform.position;
+        newRocket.transform.position = rocketShootPoint.transform.position;
         Destroy(newRocket, 1.5f);
     }
     

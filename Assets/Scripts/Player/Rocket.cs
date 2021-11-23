@@ -16,16 +16,6 @@ public class Rocket : MonoBehaviour
         transform.Translate(speed * Time.deltaTime, 0, 0);
     }
 
-    // Collision with Enemy
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if(collision.gameObject)
-        {
-            Debug.Log("Rocket Collision with " + collision.gameObject);
-            Destroy(gameObject);
-        }
-    }
-
     // Collision Trigger with Enemy
     private void OnTriggerEnter2D(Collider2D collision)
     {
