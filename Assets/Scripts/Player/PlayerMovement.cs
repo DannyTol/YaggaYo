@@ -16,6 +16,8 @@ public class PlayerMovement : MonoBehaviour
     [Space]
     public int points;
     [Space]
+    public float weaponTime = 30f;
+    [Space]
     public GameObject shieldPrefab;
     public Transform shieldPoint;
     [Space]
@@ -39,7 +41,17 @@ public class PlayerMovement : MonoBehaviour
     public Canvas target1;
 
     [Space]
+    public GameObject bigShotPrefab;
+    public AudioSource bigShotSound;
+    [Space]
+    public GameObject bulletUpPrefab;
+    public GameObject bulletDownPrefab;
+    public GameObject bulletForwardPrefab;
+    public AudioSource tripleShotSound;
+
+    [Space]
     public int gameOver = 0;
+    public int changeShot = 0;
 
 
     private void Update()
@@ -53,6 +65,8 @@ public class PlayerMovement : MonoBehaviour
         UiText();
 
         Health();
+
+        WeaponTime();
     }
 
     // Player moves
@@ -86,11 +100,7 @@ public class PlayerMovement : MonoBehaviour
     // Player create a Bullet
     void CreateBullet()
     {
-        Debug.Log("Create a Bullet");
-        GameObject newBullet = Instantiate(bulletPrefab);
-        newBullet.transform.position = shootPoint.transform.position;
-        audioShoot.Play();
-        Destroy(newBullet, 1.5f);
+        ChangeShot();
     }
 
     // Player Shoots Rocket 
@@ -109,6 +119,58 @@ public class PlayerMovement : MonoBehaviour
                 {
                     Debug.Log("No Rockets");
                 }
+            }
+        }
+    }
+
+    // Switches Bullets
+    void ChangeShot()
+    {
+
+        switch (changeShot)
+        {
+            case 0:
+                Debug.Log("Create a Bullet");
+                GameObject newBullet = Instantiate(bulletPrefab);
+                newBullet.transform.position = shootPoint.transform.position;
+                audioShoot.Play();
+                Destroy(newBullet, 1.5f);
+                break;
+
+            case 1:
+                Debug.Log("Changed to BigShot");
+                GameObject newBigShot = Instantiate(bigShotPrefab);
+                newBigShot.transform.position = shootPoint.transform.position;
+                bigShotSound.Play();
+                Destroy(newBigShot, 1.5f);
+                break;
+
+            case 2:
+                Debug.Log("Changed to TripleShot");
+                tripleShotSound.Play();
+                GameObject newBulletUp = Instantiate(bulletUpPrefab);
+                newBulletUp.transform.position = shootPoint.transform.position;
+                Destroy(newBulletUp, 1.5f);
+
+                GameObject newBulletDown = Instantiate(bulletDownPrefab);
+                newBulletDown.transform.position = shootPoint.transform.position;
+                Destroy(newBulletDown, 1.5f);
+
+                GameObject newBulletForward = Instantiate(bulletForwardPrefab);
+                newBulletForward.transform.position = shootPoint.transform.position;
+                Destroy(newBulletForward, 1.5f);
+                break;
+        }
+    }
+
+    void WeaponTime()
+    {
+        if (changeShot > 0)
+        {
+            weaponTime -= 1 * Time.deltaTime;
+            if (weaponTime <= 0)
+            {
+                changeShot = 0;
             }
         }
     }

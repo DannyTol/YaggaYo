@@ -599,7 +599,7 @@ MonoBehaviour:
   speed: 1.2
   pointsToGive: 15
   firstShot: 0
-  nextShot: 1.2
+  nextShot: 2.4
   enemy2BulletPrefab: {fileID: 2460467266663597603, guid: 0adb65abcf88c864385162f19bf17d14, type: 3}
   shootPoint1: {fileID: 435969008004620937}
   shootPoint2: {fileID: 435969006954782501}

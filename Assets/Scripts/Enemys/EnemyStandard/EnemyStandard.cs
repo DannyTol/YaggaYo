@@ -33,6 +33,24 @@ public class EnemyStandard : MonoBehaviour
             DamageSprite();
         }
 
+        // Collision with BigShot
+        if(collision.gameObject.tag == "BigShot")
+        {
+            Debug.Log("StandardEnemy get hit by BigShot");
+            health -= FindObjectOfType<BigShot>().damage;
+
+            DamageSprite();
+        }
+
+        // Collision with TripleShot
+        if(collision.gameObject.tag == "TripleShot")
+        {
+            Debug.Log("StandardEnemy get hit by TripleShot");
+            health -= FindObjectOfType<TripleShotDamage>().damage;
+
+            DamageSprite();
+        }
+
         // Collision with PlayerRocket
         if(collision.gameObject.tag == "Rocket")
         {

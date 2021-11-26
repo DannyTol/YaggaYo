@@ -30,6 +30,8 @@ public class Enemy2 : MonoBehaviour
     private void Awake()
     {
         speed = Random.Range(0.3f, 2f);
+        firstShot = Random.Range(0, 1.6f);
+        nextShot = Random.Range(1.7f, 2.8f);
 
     }
 
@@ -55,6 +57,24 @@ public class Enemy2 : MonoBehaviour
         {
             Debug.Log("Bullet hits Enemy");
             health -= FindObjectOfType<Bullet>().bulletDamage;
+
+            DamageSprite();
+        }
+
+        // Collision with BigShot
+        if (collision.gameObject.tag == "BigShot")
+        {
+            Debug.Log("Enemy2 get hit by BigShot");
+            health -= FindObjectOfType<BigShot>().damage;
+
+            DamageSprite();
+        }
+
+        // Collision with TripleShot
+        if (collision.gameObject.tag == "TripleShot")
+        {
+            Debug.Log("Enemy2 get hit by TripleShot");
+            health -= FindObjectOfType<TripleShotDamage>().damage;
 
             DamageSprite();
         }

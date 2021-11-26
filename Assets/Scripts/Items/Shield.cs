@@ -22,6 +22,9 @@ public class Shield : MonoBehaviour
     // Shield is following Player
     private void OnTriggerStay2D(Collider2D collision)
     {
-        transform.parent = collision.transform;
+        if (collision.gameObject.tag == "Player")
+        {
+            transform.parent = collision.transform;
+        }
     }
 }

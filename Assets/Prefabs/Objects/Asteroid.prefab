@@ -126,3 +126,8 @@ MonoBehaviour:
   speed: 20
   damageToGive: 50
   pointsToGive: 50
+  medikitItemPrefab: {fileID: 8563542371745953341, guid: 0144f7a37ea844c4faf259974b23c6aa, type: 3}
+  shieldItemPrefab: {fileID: 359877284369740644, guid: d2f8d658f57c9724db57fd00c1709537, type: 3}
+  rocketItemPrefab: {fileID: 3868597188890283615, guid: d4190dbaeb8fd86458136990337e27af, type: 3}
+  bigShotItemPrefab: {fileID: 5172200486298752822, guid: 80a8d3a8c7be55843b390fb81ed3c856, type: 3}
+  dropItem: 0
