@@ -25,7 +25,7 @@ public class Enemy2 : MonoBehaviour
     [Space]
     public GameObject dieEffectPrefab;
 
-   
+    
     // Gives Enemy Random Speed
     private void Awake()
     {
@@ -35,13 +35,15 @@ public class Enemy2 : MonoBehaviour
 
     }
 
+
     void Update()
     {
+
         Move();
 
-        Health();
-
         EnemyShoot();
+
+        Health();
     }
 
     // Enemy moves
@@ -57,7 +59,6 @@ public class Enemy2 : MonoBehaviour
         {
             Debug.Log("Bullet hits Enemy");
             health -= FindObjectOfType<Bullet>().bulletDamage;
-
             DamageSprite();
         }
 
@@ -66,7 +67,6 @@ public class Enemy2 : MonoBehaviour
         {
             Debug.Log("Enemy2 get hit by BigShot");
             health -= FindObjectOfType<BigShot>().damage;
-
             DamageSprite();
         }
 
@@ -75,7 +75,6 @@ public class Enemy2 : MonoBehaviour
         {
             Debug.Log("Enemy2 get hit by TripleShot");
             health -= FindObjectOfType<TripleShotDamage>().damage;
-
             DamageSprite();
         }
 
@@ -84,7 +83,6 @@ public class Enemy2 : MonoBehaviour
         {
             Debug.Log("Enemy2 collision with PlayerRocket");
             health -= FindObjectOfType<Rocket>().damage;
-
             DamageSprite();
 
         }
@@ -107,16 +105,11 @@ public class Enemy2 : MonoBehaviour
         }
     }
 
-    // Enemy Healthmanagment
-    void Health()
+    public void Health()
     {
         if (health <= 0)
         {
             health = 0;
-        }
-
-        if (health == 0)
-        {
             Die();
         }
     }

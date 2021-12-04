@@ -16,6 +16,7 @@ TagManager:
   - RocketItem
   - BigShot
   - TripleShot
+  - E3SpawnTrigger
   layers:
   - Default
   - TransparentFX
