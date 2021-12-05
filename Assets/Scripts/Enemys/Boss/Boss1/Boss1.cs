@@ -8,6 +8,9 @@ public class Boss1 : MonoBehaviour
     public float health;
 
     [Space]
+    public int pointsToGive;
+
+    [Space]
     public float xSpeed;
     public float ySpeed;
 
@@ -16,11 +19,23 @@ public class Boss1 : MonoBehaviour
     public int phase;
 
     [Space]
-    public float moveTime;
-    public float newTime;
+    public int step;
 
     [Space]
-    public int step;
+    public GameObject bulletPrefab;
+
+    [Space]
+    public Transform shootPoint1;
+    public Transform shootPoint2;
+    public Transform shootPoint3;
+    public Transform shootPoint4;
+
+    [Space]
+    public float firstShot;
+    public float nextShot;
+
+    private int shootPoint;
+
 
     private void Update()
     {
@@ -29,6 +44,7 @@ public class Boss1 : MonoBehaviour
         Health();
 
         SwitchPhase();
+
     }
 
     // Boss Moves
@@ -42,18 +58,17 @@ public class Boss1 : MonoBehaviour
     {
         switch (dirMove)
         {
+
             case 0:
                 ySpeed = 0;
                 transform.Translate(xSpeed * Time.deltaTime, ySpeed * Time.deltaTime, 0);
                 break;
 
             case 1:
-                ySpeed = 1.2f;
                 transform.Translate(xSpeed * Time.deltaTime, ySpeed * Time.deltaTime, 0);
                 break;
 
             case 2:
-                ySpeed = 1.2f;
                 transform.Translate(xSpeed * Time.deltaTime, -ySpeed * Time.deltaTime, 0);
                 break;
 
@@ -71,22 +86,38 @@ public class Boss1 : MonoBehaviour
             Debug.Log("Boss1 Collsion with PlayerBullet");
             health -= FindObjectOfType<Bullet>().bulletDamage;
         }
+
+        // Collision with BigShot
+        if(collision.gameObject.tag == "BigShot")
+        {
+            Debug.Log("Boss1 Collision with BigShot");
+            health -= FindObjectOfType<BigShot>().damage;
+            Destroy(collision.gameObject);
+        }
+
+        // Collision with TripleShot
+        if(collision.gameObject.tag == "TripleShot")
+        {
+            Debug.Log("Boss1 Collision with tripleShot");
+            health -= FindObjectOfType<TripleShotDamage>().damage;
+            Destroy(collision.gameObject);
+        }
+
+        // Collision with Rocket
+        if(collision.gameObject.tag == "Rocket")
+        {
+            Debug.Log("Boss1 Collision with Rocket");
+            health -= FindObjectOfType<Rocket>().damage;
+            Destroy(collision.gameObject);
+        }
     }
 
     // Healthsystem
     void Health()
     {
-        if( health <= 450)
-        {
-            phase = 1;
-            step = 0;
-        }
-        else if(health <= 400)
-        {
-            phase = 1;
-            step = 1;
-        }
-        else if (health <= 0)
+        HealthDown();
+
+        if (health <= 0)
         {
             health = 0;
             if(health == 0)
@@ -96,12 +127,66 @@ public class Boss1 : MonoBehaviour
         }
     }
 
+    // By Healthsystem switch to another Phase and step
+    void HealthDown()
+    {
+        switch (health)
+        {
+            case 500:
+                phase = 1;
+                step = 0;
+                break;
+
+            case 450:
+                phase = 1;
+                step = 1;
+                break;
+
+            case 400:
+                phase = 1;
+                step = 2;
+                break;
+
+            case 350:
+                phase = 2;
+                step = 0;
+                break;
+
+            case 300:
+                phase = 2;
+                step = 1;
+                break;
+
+            case 250:
+                phase = 2;
+                step = 2;
+                break;
+
+            case 200:
+                phase = 3;
+                step = 0;
+                break;
+
+            case 150:
+                phase = 3;
+                step = 1;
+                break;
+
+            case 100:
+                phase = 3;
+                step = 2;
+                break;
+        }
+    }
+
     // Boss dies
     void Die()
     {
+        FindObjectOfType<PlayerMovement>().points += pointsToGive;
         Destroy(gameObject);
     }
 
+    // Switch Phase
     void SwitchPhase()
     {
         switch (phase)
@@ -113,51 +198,163 @@ public class Boss1 : MonoBehaviour
             case 1:
                 Phase1();
                 break;
+
+            case 2:
+                Phase2();
+                break;
+
+            case 3:
+                Phase3();
+                break;
         }
     }
 
-    void Timer()
-    {
-        
-        if(moveTime > 0)
-        {
-            moveTime -= 1 * Time.deltaTime;
-            if(moveTime <= 0)
-            {
-                moveTime = 0;
-            }
-        }
-    }
-
+    //Phase 1
     void Phase1()
     {
-        Timer();
-
+        Shoot();
+        nextShot = Random.Range(0.5f, 1.4f);
         switch (step)
         {
             case 0:
+                dirMove = 1;
+                ySpeed = 3.2f;
+                break;
                 
-                if(moveTime == 0)
-                {
-                    dirMove = 0;
-                }
-                else if (moveTime > 0)
-                {
-                    dirMove = 1;
-                }
+                
+            case 1:
+                dirMove = 2;
+                ySpeed = 4f;
+                break;
+
+            case 2:
+                dirMove = 1;
+                ySpeed = 4f;
+                break;
+        }
+    }
+
+    // Phase 2
+    void Phase2()
+    {
+        Shoot();
+        nextShot = Random.Range(0.3f, 1.1f);
+        switch (step)
+        {
+            case 0:
+                dirMove = 0;
                 break;
 
             case 1:
-                
-                if(moveTime <= 0)
-                {
-                    dirMove = 0;
-                }
-                else if( moveTime > 0)
-                {
-                    dirMove = 2;
-                }
+                dirMove = 1;
+                ySpeed = 2.5f;
                 break;
+
+            case 2:
+                dirMove = 0;
+                break;
+        }
+    }
+    
+    //Phase 3
+    void Phase3()
+    {
+        Shoot();
+        nextShot = Random.Range(0.2f, 0.8f);
+        switch (step)
+        {
+            case 0:
+                dirMove = 2;
+                ySpeed = 3f;
+                break;
+
+            case 1:
+                dirMove = 2;
+                ySpeed = 3.7f;
+                break;
+
+            case 2:
+                dirMove = 0;
+                break;
+        }
+    }
+
+    // Switch ShootPoint and create Bullet
+    void SwitchShootPoint()
+    {
+        shootPoint = Random.Range(0, 5);
+
+        switch (shootPoint)
+        {
+            case 0:
+                GameObject newBullet = Instantiate(bulletPrefab);
+                newBullet.transform.position = shootPoint1.transform.position;
+                Destroy(newBullet, 2.5f);
+                firstShot = nextShot;
+                break;
+
+            case 1:
+                GameObject newBullet1 = Instantiate(bulletPrefab);
+                newBullet1.transform.position = shootPoint2.transform.position;
+                Destroy(newBullet1, 2.5f);
+                firstShot = nextShot;
+                break;
+
+            case 2:
+                GameObject newBullet2 = Instantiate(bulletPrefab);
+                newBullet2.transform.position = shootPoint3.transform.position;
+                Destroy(newBullet2, 2.5f);
+                firstShot = nextShot;
+                break;
+
+            case 3:
+                GameObject newBullet3 = Instantiate(bulletPrefab);
+                newBullet3.transform.position = shootPoint4.transform.position;
+                Destroy(newBullet3, 2.5f);
+                firstShot = nextShot;
+                break;
+
+            case 4:
+                GameObject newBullet4 = Instantiate(bulletPrefab);
+                newBullet4.transform.position = shootPoint1.transform.position;
+                Destroy(newBullet4, 2.5f);
+
+                GameObject newBullet5 = Instantiate(bulletPrefab);
+                newBullet5.transform.position = shootPoint2.transform.position;
+                Destroy(newBullet5, 2.5f);
+
+                GameObject newBullet6 = Instantiate(bulletPrefab);
+                newBullet6.transform.position = shootPoint3.transform.position;
+                Destroy(newBullet6, 2.5f);
+
+                GameObject newBullet7 = Instantiate(bulletPrefab);
+                newBullet7.transform.position = shootPoint4.transform.position;
+                Destroy(newBullet7, 2.5f);
+                break;
+        }
+    }
+
+    // Boss shoots
+    void Shoot()
+    {
+        TimeToShoot();
+        if (firstShot == 0)
+        {
+            SwitchShootPoint();
+        }
+        
+    }
+
+    // Time to reload shot
+    void TimeToShoot()
+    {
+        if (firstShot > 0)
+        {
+            firstShot -= 1 * Time.deltaTime;
+            if(firstShot <= 0)
+            {
+                firstShot = 0;
+            }
         }
     }
 }
